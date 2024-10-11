@@ -9,7 +9,9 @@ from .user import User
 
 
 def get_expiration_datetime():
-    return timezone.now() + timezone.timedelta(days=settings.USER_INVITE_EXPIRATION_DAYS)
+    return timezone.now() + timezone.timedelta(
+        days=settings.USER_INVITE_EXPIRATION_DAYS
+    )
 
 
 class UserInvitation(models.Model):
@@ -24,6 +26,15 @@ class UserInvitation(models.Model):
 
     def send_invitation_email(self):
         send_mail(
+            "You have been invited to join our platform",
+            f"Click here to join: { settings.SENDING_DOMAIN }/invite/{self.id}",
+            "Kind regards, The Team",
+            [self.email],
+        )
+
+    # send_mail replaced with print
+    def console_send_invitation_email(self):
+        print(
             "You have been invited to join our platform",
             f"Click here to join: { settings.SENDING_DOMAIN }/invite/{self.id}",
             "Kind regards, The Team",
